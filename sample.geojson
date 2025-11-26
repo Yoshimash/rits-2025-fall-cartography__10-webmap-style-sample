@@ -1,0 +1,53 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "amenity": "university",
+        "name:en": "Ritsumeikan University",
+        "name": "立命館大学",
+        "published_year": 1869
+      },
+      "geometry": {
+        "coordinates": [
+          135.72376046509754,
+          35.032728498452826
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "amenity": "university",
+        "name:en": "Kyoto University",
+        "name": "京都大学",
+        "published_year": 1897
+      },
+      "geometry": {
+        "coordinates": [
+          135.779184,
+          35.025721
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "amenity": "university",
+        "name:en": "Kyoto Prefectural University",
+        "name": "京都府立大学",
+        "published_year": 1949
+      },
+      "geometry": {
+        "coordinates": [
+          135.766872,
+          35.046908
+        ],
+        "type": "Point"
+      }
+    }
+  ]
+}

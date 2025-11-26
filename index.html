@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>シンプルなウェブ地図</title>
+
+    <!-- Maplibre GL JSのCSSファイルを読み込み（地図の見た目を決める記述がされている） -->
+    <link href="https://unpkg.com/maplibre-gl@^5.6.1/dist/maplibre-gl.css" rel="stylesheet" />
+
+    <style>
+        /* ページ全体の「スキマ」をなくす */
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 地図コンテナを画面全体に表示 */
+        #map {
+            width: 100vw;  /* 画面の幅100% */
+            height: 100vh; /* 画面の高さ100% */
+        }
+    </style>
+</head>
+<body>
+    <!-- 地図を表示するための「コンテナ」 -->
+    <div id="map"></div>
+
+    <!-- Maplibre GL JSのJavaScriptライブラリを読み込み -->
+    <script src="https://unpkg.com/maplibre-gl@^5.6.1/dist/maplibre-gl.js"></script>
+
+    <!-- 地図を初期化するJavaScriptファイルを読み込み -->
+    <script src="index.js"></script>
+</body>
+</html>
