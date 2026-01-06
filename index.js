@@ -20,212 +20,128 @@ const map = new maplibregl.Map({
           attribution: '<a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">地理院タイル</a>',
         },
 
-        // geojson (URL 指定)
-        'geojson-sample-source-1': {
-          type: 'geojson',
-          data: './sample.geojson',
+        kokudosuuchi1:{
+          type:'geojson',
+          data:'./data1.geojson'
         },
-
-        // geojson (オブジェクト指定)
-        'geojson-sample-source-2': {
-          type: 'geojson',
-          data: {
-            type: 'FeatureCollection',
-            features: [
-              {
-                type: 'Feature',
-                properties: {
-                  name: 'Pointサンプル'
-                },
-                geometry: {
-                  coordinates: [136.57475446318807, 35.799855185158634],
-                  type: 'Point'
-                }
-              },
-              {
-                type: 'Feature',
-                properties: {
-                  name: 'LineStringサンプル'
-                },
-                geometry: {
-                  coordinates: [
-                    [136.87533029613263, 35.7297616678965],
-                    [136.53280435975688, 35.65136408782364],
-                    [136.74068408881897, 35.44455049551661]
-                  ],
-                  type: 'LineString'
-                }
-              },
-              {
-                type: 'Feature',
-                properties: {
-                  name: 'Polygonサンプル'
-                },
-                geometry: {
-                  coordinates: [
-                    [
-                      [135.84804460814843, 35.80861515928164],
-                      [135.84804460814843, 35.66637305952217],
-                      [136.2596903980534, 35.66637305952217],
-                      [136.2596903980534, 35.80861515928164],
-                      [135.84804460814843, 35.80861515928164],
-                    ]
-                  ],
-                  type: 'Polygon'
-                }
-              }
-            ]
-          },
-        },
-
-        // ベクトルタイル
-        'vector-source': {
-          type: 'vector',
-          url: 'https://demotiles.maplibre.org/tiles/tiles.json',
+        kokudosuuchi2:{
+          type:'geojson',
+          data:'./data2.geojson'
         }
       },
 
+
+        
       // レイヤ。配置順に描画される
       layers: [
-        // 背景を指定するレイヤ
-        {
-          id: 'background',
-          type: 'background',
-          paint: {
-            'background-color': 'green'
-          }
-        },
+       {
+        id:'basemap',
+        source:'raster-source',
+        type:'raster',
+       },
+          
+       {id:'kokudosuuchi1-rayer',
+        source:'kokudosuuchi1',
+        type:'fill',
+        filter:['==','$type','Polygon'],
+        paint:{
+          'fill-color':[
+            'case',
+            ['==',['get','A31a_305'],1],
+            'yellow',
+            'blue'
+          ],
+          'fill-opacity':0.6,
+        }
+       },
+      
+{
+  id:'kokudosuuchi1-symbol',
+  source:'kokudosuuchi1',
+  type:'symbol',
+layout:{
+  'text-field':[
+    'case',
+    ['==',['get','A31a_305'],1],
+    '注意',
+        ['==',['get','A31a_305'],2],
+    '危険',
+    '超危険'
+  ]
+},
 
-        // ラスタータイルレイヤ
-        {
-          id: 'raster-source-layer',
-          type: 'raster',
-          source: 'raster-source',
-        },
+sources: {
+  'raster-source': {
+    type: 'raster',
+    tiles: [
+      'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+    ],
+    tileSize: 256
+  },
 
-        // Circle レイヤ
-        {
-          id: 'circle-layer',
-          type: 'circle',
-          source: 'geojson-sample-source-2',
-          filter: ['==', '$type', 'Point'], // 点のみを対象
-          layout: {
-            'visibility': 'visible' // レイヤの表示・非表示
-          },
-          paint: {
-            "circle-radius"         : 8,           // 半径（ピクセル）
-            "circle-color"          : "#ff0000", // 塗りつぶし色
-            "circle-opacity"        : 1.0,         // 塗りつぶし透明度
-            "circle-stroke-color"   : "#ffffff", // 境界線色
-            "circle-stroke-width"   : 2,           // 境界線幅
-            "circle-stroke-opacity" : 1.0          // 境界線透明度
-          },
-        },
+  'kokudosuuchi2': {
+    type: 'geojson',
+    data: '/data/A31a-30-24_23_8505080099_20.geojson'
+  }
+},
 
-        // Symbol レイヤ
-        {
-          id: 'symbol-layer',
-          type: 'symbol',
-          source: 'geojson-sample-source-2',
-          layout: {
-            'text-field' : ['get', 'name'], // プロパティ "name" の値をラベルに使用
-            'text-size'  : 12,
-            'text-anchor': 'bottom',
-          },
-          paint: {
-            'text-color'     : '#000000', // 文字色
-            'text-halo-color': '#ffffff', // 文字の縁取り色
-            'text-halo-width': 2,           // 文字の縁取り幅
-          },
-        },
+layers: [
+  {
+    id: 'basemap',
+    source: 'raster-source',
+    type: 'raster',
+  },
 
-        // line レイヤ
-        {
-          id: 'line-layer',
-          type: 'line',
-          source: 'geojson-sample-source-2',
-          filter: ['==', '$type', 'LineString'], // 線分のみを対象
-          paint: {
-            'line-color': '#0000ff', // 線の色
-            'line-width': 4,           // 線の幅
-          },
-        },
+  {
+    id: 'kokudosuuchi2-rayer',
+    source: 'kokudosuuchi2',
+    type: 'fill',
+    filter: ['==', '$type', 'Polygon'],
+    paint: {
+      'fill-color': [
+        'case',
+        ['==', ['get', 'A31a_305'], 1],
+        'yellow',
+        'green'
+      ],
+      'fill-opacity': 0.6,
+    }
+  },
 
-        // polygon レイヤ
-        {
-          id: 'polygon-layer',
-          type: 'fill',
-          source: 'geojson-sample-source-2',
-          filter: ['==', '$type', 'Polygon'], // ポリゴンのみを対象
-          paint: {
-            'fill-color'  : '#00ff00', // 塗りつぶし色
-            'fill-opacity': 0.5,       // 塗りつぶし透明度
-          },
-        },
+  {
+    id: 'kokudosuuchi2-symbol',
+    source: 'kokudosuuchi2',
+    type: 'symbol',
+    layout: {
+      'text-field': [
+        'case',
+        ['==', ['get', 'A31a_305'], 1],
+        '注意',
+        ['==', ['get', 'A31a_305'], 2],
+        '危険',
+        '超危険'
+      ]
+    }
+  }
+]
+   
+ // A31a_305
+}
+      //   {
+      //     id:'kokudosuuchi1-symbol-rayer',
+      //     source:'kokudosuuchi1',
+      //     type:'symbol',
+      //     layout:{
+      //       'text-field':[
+      //         'concat',
+      //         '浸水ランク',
+      //         ['get','A31a_205'],
+      //         ]
+      //            }
+      //   },
 
-        // Expression の 例
-        {
-          id: 'ritsumeikan-icon-layer',
-          type: 'circle',
-          source: 'geojson-sample-source-1',
-          // amenity プロパティが university の地物を対象とする Expression
-          filter:['==', ['get', 'amenity'], 'university'],
-          paint: {
-            "circle-radius"         : 10,
-            "circle-color"          : [
-              'case',
-              ['<=', ['get', 'published_year'], 1900],
-              "#ff0000", // 1900年以前に創立された大学は赤色
-              "#00ff00"  // それ以外は緑色
-            ],
-            "circle-opacity"        : 1.0,
-            "circle-stroke-color"   : "#000000",
-            "circle-stroke-width"   : 2,
-            "circle-stroke-opacity" : 1.0
-          },
-        },
 
-        // Expression の 例
-        {
-          id: 'university-layer',
-          type: 'symbol',
-          source: 'geojson-sample-source-1',
-          // amenity プロパティが university の地物を対象とする Expression
-          filter:['==', ['get', 'amenity'], 'university'],
-          layout: {
-            'text-field': [
-              // 文字列を連結する Expression
-              'concat',
-              ['get', 'name:en'],
-              '\n',
-              '（',
-              ['get', 'name'],
-              '）',
-              '\n',
-              '明治',
-              [
-                // 数字を文字列に変換する Expression
-                'to-string',
-                [
-                  // 西暦から和暦に変換する減算の Expression
-                  '-',
-                  ['get', 'published_year'],
-                  1867,
-                ],
-              ],
-              '年創立',
-            ],
-            'text-size'  : 12,
-            'text-offset': [0, 5],
-            'text-anchor': 'bottom',
-          },
-          paint: {
-            'text-color'     : '#3333ff',
-            'text-halo-color': '#ffffff',
-            'text-halo-width': 2,
-          },
-        },
-
+       
         // ベクトルタイルレイヤ は次回の授業で解説します
         // TODO: 簡単な Interpolate の例
       ]
@@ -242,7 +158,7 @@ const map = new maplibregl.Map({
     // hash: URLのハッシュ部分に地図の位置情報を反映させるかどうか
     hash: true,
 
-    maxZoom: 12,
+    //maxZoom: 12,
     minZoom: 4,
 });
 
